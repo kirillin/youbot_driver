@@ -740,6 +740,50 @@ void SpeedControlSwitchingThreshold::setYouBotMailboxMsg(const YouBotSlaveMailbo
   // Bouml preserved body end 0006A471
 }
 
+CurrentControlSwitchingThreshold::CurrentControlSwitchingThreshold() {
+  this->name = "CurrentControlSwitchingThreshold";
+  this->lowerLimit = INT_MIN * radian_per_second;
+  this->upperLimit = INT_MAX * radian_per_second;
+  this->parameterType = MOTOR_CONTOLLER_PARAMETER;
+}
+
+CurrentControlSwitchingThreshold::~CurrentControlSwitchingThreshold() {
+}
+
+void CurrentControlSwitchingThreshold::getParameter(quantity<angular_velocity>& parameter) const {
+  parameter = this->value;
+}
+
+void CurrentControlSwitchingThreshold::setParameter(const quantity<angular_velocity>& parameter) {
+  if (this->lowerLimit > parameter) {
+    throw std::out_of_range("The parameter exceeds the lower limit");
+  }
+  if (this->upperLimit < parameter) {
+    throw std::out_of_range("The parameter exceeds the upper limit");
+  }
+
+  this->value = parameter;
+}
+
+void CurrentControlSwitchingThreshold::toString(std::string& value) {
+  std::stringstream ss;
+  ss << this->name << ": " << this->value.value();
+  value  = ss.str();
+}
+
+void CurrentControlSwitchingThreshold::getYouBotMailboxMsg(YouBotSlaveMailboxMsg& message, TMCLCommandNumber msgType, const YouBotJointStorage& storage) const {
+  message.stctOutput.commandNumber = msgType;
+  message.stctOutput.moduleAddress = DRIVE;
+  message.stctOutput.typeNumber = 176; //CurrentControlSwitchingThreshold
+  message.stctOutput.value = (int32) boost::math::round((value.value() / (storage.gearRatio * 2.0 * M_PI)) * 60.0);
+}
+
+void CurrentControlSwitchingThreshold::setYouBotMailboxMsg(const YouBotSlaveMailboxMsg& message, const YouBotJointStorage& storage) {
+  double motorRPM = (int32)message.stctInput.value;
+  this->value =  ((motorRPM / 60.0) * storage.gearRatio * 2.0 * M_PI) * radian_per_second;
+}
+
+
 VelocityThresholdForHallFX::VelocityThresholdForHallFX() {
   // Bouml preserved body begin 00107FF1
     this->name = "VelocityThresholdForHallFX";
@@ -1957,6 +2001,174 @@ void IClippingParameterCurrentControl::setYouBotMailboxMsg(const YouBotSlaveMail
   // Bouml preserved body begin 000811F1
     this->value = (int32)message.stctInput.value;
   // Bouml preserved body end 000811F1
+}
+
+PParameterFirstCurrentControl::PParameterFirstCurrentControl() {
+  this->name = "PParameterFirstCurrentControl";
+  this->lowerLimit = INT_MIN;
+  this->upperLimit = INT_MAX;
+  this->parameterType = MOTOR_CONTOLLER_PARAMETER;
+}
+
+PParameterFirstCurrentControl::~PParameterFirstCurrentControl() {
+}
+
+void PParameterFirstCurrentControl::getParameter(int& parameter) const {
+  parameter = this->value;
+}
+
+void PParameterFirstCurrentControl::setParameter(const int parameter) {
+  if (this->lowerLimit > parameter) {
+    throw std::out_of_range("The parameter exceeds the lower limit");
+  }
+  if (this->upperLimit < parameter) {
+    throw std::out_of_range("The parameter exceeds the upper limit");
+  }
+
+  this->value = parameter;
+}
+
+void PParameterFirstCurrentControl::toString(std::string& value) {
+  std::stringstream ss;
+  ss << this->name << ": " << this->value;
+  value  = ss.str();
+}
+
+void PParameterFirstCurrentControl::getYouBotMailboxMsg(YouBotSlaveMailboxMsg& message, TMCLCommandNumber msgType, const YouBotJointStorage& storage) const {
+  message.stctOutput.commandNumber = msgType;
+  message.stctOutput.moduleAddress = DRIVE;
+  message.stctOutput.typeNumber = 168; //PParameterFirstCurrentControl
+  message.stctOutput.value = value;
+}
+
+void PParameterFirstCurrentControl::setYouBotMailboxMsg(const YouBotSlaveMailboxMsg& message, const YouBotJointStorage& storage) {
+  this->value = (int32)message.stctInput.value;
+}
+
+IParameterFirstCurrentControl::IParameterFirstCurrentControl() {
+  this->name = "IParameterFirstCurrentControl";
+  this->lowerLimit = INT_MIN;
+  this->upperLimit = INT_MAX;
+  this->parameterType = MOTOR_CONTOLLER_PARAMETER;
+}
+
+IParameterFirstCurrentControl::~IParameterFirstCurrentControl() {
+}
+
+void IParameterFirstCurrentControl::getParameter(int& parameter) const {
+  parameter = this->value;
+}
+
+void IParameterFirstCurrentControl::setParameter(const int parameter) {
+  if (this->lowerLimit > parameter) {
+    throw std::out_of_range("The parameter exceeds the lower limit");
+  }
+  if (this->upperLimit < parameter) {
+    throw std::out_of_range("The parameter exceeds the upper limit");
+  }
+
+  this->value = parameter;
+}
+
+void IParameterFirstCurrentControl::toString(std::string& value) {
+  std::stringstream ss;
+  ss << this->name << ": " << this->value;
+  value  = ss.str();
+}
+
+void IParameterFirstCurrentControl::getYouBotMailboxMsg(YouBotSlaveMailboxMsg& message, TMCLCommandNumber msgType, const YouBotJointStorage& storage) const {
+  message.stctOutput.commandNumber = msgType;
+  message.stctOutput.moduleAddress = DRIVE;
+  message.stctOutput.typeNumber = 169; //IParameterFirstCurrentControl
+  message.stctOutput.value = value;
+}
+
+void IParameterFirstCurrentControl::setYouBotMailboxMsg(const YouBotSlaveMailboxMsg& message, const YouBotJointStorage& storage) {
+  this->value = (int32)message.stctInput.value;
+}
+
+DParameterFirstCurrentControl::DParameterFirstCurrentControl() {
+  this->name = "DParameterFirstCurrentControl";
+  this->lowerLimit = INT_MIN;
+  this->upperLimit = INT_MAX;
+  this->parameterType = MOTOR_CONTOLLER_PARAMETER;
+}
+
+DParameterFirstCurrentControl::~DParameterFirstCurrentControl() {
+}
+
+void DParameterFirstCurrentControl::getParameter(int& parameter) const {
+  parameter = this->value;
+}
+
+void DParameterFirstCurrentControl::setParameter(const int parameter) {
+  if (this->lowerLimit > parameter) {
+    throw std::out_of_range("The parameter exceeds the lower limit");
+  }
+  if (this->upperLimit < parameter) {
+    throw std::out_of_range("The parameter exceeds the upper limit");
+  }
+
+  this->value = parameter;
+}
+
+void DParameterFirstCurrentControl::toString(std::string& value) {
+  std::stringstream ss;
+  ss << this->name << ": " << this->value;
+  value  = ss.str();
+}
+
+void DParameterFirstCurrentControl::getYouBotMailboxMsg(YouBotSlaveMailboxMsg& message, TMCLCommandNumber msgType, const YouBotJointStorage& storage) const {
+  message.stctOutput.commandNumber = msgType;
+  message.stctOutput.moduleAddress = DRIVE;
+  message.stctOutput.typeNumber = 170; //DParameterFirstCurrentControl
+  message.stctOutput.value = value;
+}
+
+void DParameterFirstCurrentControl::setYouBotMailboxMsg(const YouBotSlaveMailboxMsg& message, const YouBotJointStorage& storage) {
+  this->value = (int32)message.stctInput.value;
+}
+
+IClippingParameterFirstCurrentControl::IClippingParameterFirstCurrentControl() {
+  this->name = "IClippingParameterFirstCurrentControl";
+  this->lowerLimit = INT_MIN;
+  this->upperLimit = INT_MAX;
+  this->parameterType = MOTOR_CONTOLLER_PARAMETER;
+}
+
+IClippingParameterFirstCurrentControl::~IClippingParameterFirstCurrentControl() {
+}
+
+void IClippingParameterFirstCurrentControl::getParameter(int& parameter) const {
+  parameter = this->value;
+}
+
+void IClippingParameterFirstCurrentControl::setParameter(const int parameter) {
+  if (this->lowerLimit > parameter) {
+    throw std::out_of_range("The parameter exceeds the lower limit");
+  }
+  if (this->upperLimit < parameter) {
+    throw std::out_of_range("The parameter exceeds the upper limit");
+  }
+
+  this->value = parameter;
+}
+
+void IClippingParameterFirstCurrentControl::toString(std::string& value) {
+  std::stringstream ss;
+  ss << this->name << ": " << this->value;
+  value  = ss.str();
+}
+
+void IClippingParameterFirstCurrentControl::getYouBotMailboxMsg(YouBotSlaveMailboxMsg& message, TMCLCommandNumber msgType, const YouBotJointStorage& storage) const {
+  message.stctOutput.commandNumber = msgType;
+  message.stctOutput.moduleAddress = DRIVE;
+  message.stctOutput.typeNumber = 171; //IClippingParameterFirstCurrentControl
+  message.stctOutput.value = value;
+}
+
+void IClippingParameterFirstCurrentControl::setYouBotMailboxMsg(const YouBotSlaveMailboxMsg& message, const YouBotJointStorage& storage) {
+  this->value = (int32)message.stctInput.value;
 }
 
 MaximumVelocityToSetPosition::MaximumVelocityToSetPosition() {

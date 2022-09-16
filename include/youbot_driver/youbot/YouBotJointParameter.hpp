@@ -644,6 +644,45 @@ friend class YouBotJoint;
     ParameterType parameterType;
 
 };
+
+///////////////////////////////////////////////////////////////////////////////
+/// Adjusts the limit to switch between first current PID parameter set and second current PID parameter set. If the velocity threshold is set to zero, the parameter set 2 is used all the time.
+///////////////////////////////////////////////////////////////////////////////
+class CurrentControlSwitchingThreshold : public YouBotJointParameter {
+friend class YouBotJoint;
+public:
+    CurrentControlSwitchingThreshold();
+
+    virtual ~CurrentControlSwitchingThreshold();
+
+    void getParameter(quantity<angular_velocity>& parameter) const;
+
+    void setParameter(const quantity<angular_velocity>& parameter);
+
+    void toString(std::string& value);
+
+
+private:
+    void getYouBotMailboxMsg(YouBotSlaveMailboxMsg& message, TMCLCommandNumber msgType, const YouBotJointStorage& storage) const;
+
+    void setYouBotMailboxMsg(const YouBotSlaveMailboxMsg& message, const YouBotJointStorage& storage);
+
+    std::string getName() const {return this->name;};
+
+    ParameterType getType() const {return this->parameterType;};
+
+    quantity<angular_velocity> upperLimit;
+
+    quantity<angular_velocity> lowerLimit;
+
+    quantity<angular_velocity> value;
+
+    std::string name;
+
+    ParameterType parameterType;
+
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 /// Velocity to switch from controlled to hallFX mode. Set this value to a realistic velocity which the motor can reach in controlled mode!
 ///////////////////////////////////////////////////////////////////////////////
@@ -1274,7 +1313,7 @@ friend class YouBotJoint;
 
 };
 ///////////////////////////////////////////////////////////////////////////////
-/// P-Parameter of PID current regulator.
+/// P-Parameter of PID current regulator. Second set!
 ///////////////////////////////////////////////////////////////////////////////
 class PParameterCurrentControl : public YouBotJointParameter {
 friend class YouBotJoint;
@@ -1311,7 +1350,7 @@ friend class YouBotJoint;
 
 };
 ///////////////////////////////////////////////////////////////////////////////
-/// I-Parameter of PID current regulator.
+/// I-Parameter of PID current regulator. Second set!
 ///////////////////////////////////////////////////////////////////////////////
 class IParameterCurrentControl : public YouBotJointParameter {
 friend class YouBotJoint;
@@ -1348,7 +1387,7 @@ friend class YouBotJoint;
 
 };
 ///////////////////////////////////////////////////////////////////////////////
-/// D-Parameter of PID current regulator.
+/// D-Parameter of PID current regulator. Second set!
 ///////////////////////////////////////////////////////////////////////////////
 class DParameterCurrentControl : public YouBotJointParameter {
 friend class YouBotJoint;
@@ -1385,7 +1424,7 @@ friend class YouBotJoint;
 
 };
 ///////////////////////////////////////////////////////////////////////////////
-/// I-Clipping Parameter of PID current regulator. 
+/// I-Clipping Parameter of PID current regulator. Second set!
 ///////////////////////////////////////////////////////////////////////////////
 class IClippingParameterCurrentControl : public YouBotJointParameter {
 friend class YouBotJoint;
@@ -1409,6 +1448,165 @@ friend class YouBotJoint;
     std::string getName() const {return this->name;};
 
     ParameterType getType() const {return this->parameterType;};
+
+    int upperLimit;
+
+    int lowerLimit;
+
+    int value;
+
+    std::string name;
+
+    ParameterType parameterType;
+
+};
+///////////////////////////////////////////////////////////////////////////////
+/// P-Parameter of PID current regulator. First set.
+///////////////////////////////////////////////////////////////////////////////
+class PParameterFirstCurrentControl : public YouBotJointParameter {
+friend class YouBotJoint;
+
+public:
+    PParameterFirstCurrentControl();
+
+    virtual ~PParameterFirstCurrentControl();
+
+    void getParameter(int &parameter) const;
+
+    void setParameter(const int parameter);
+
+    void toString(std::string &value);
+
+
+private:
+    void getYouBotMailboxMsg(YouBotSlaveMailboxMsg &message, TMCLCommandNumber msgType,
+                             const YouBotJointStorage &storage) const;
+
+    void setYouBotMailboxMsg(const YouBotSlaveMailboxMsg &message, const YouBotJointStorage &storage);
+
+    std::string getName() const { return this->name; };
+
+    ParameterType getType() const { return this->parameterType; };
+
+    int upperLimit;
+
+    int lowerLimit;
+
+    int value;
+
+    std::string name;
+
+    ParameterType parameterType;
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// I-Parameter of PID current regulator. First set.
+///////////////////////////////////////////////////////////////////////////////
+class IParameterFirstCurrentControl : public YouBotJointParameter {
+    friend class YouBotJoint;
+
+public:
+    IParameterFirstCurrentControl();
+
+    virtual ~IParameterFirstCurrentControl();
+
+    void getParameter(int &parameter) const;
+
+    void setParameter(const int parameter);
+
+    void toString(std::string &value);
+
+
+private:
+    void getYouBotMailboxMsg(YouBotSlaveMailboxMsg &message, TMCLCommandNumber msgType,
+                             const YouBotJointStorage &storage) const;
+
+    void setYouBotMailboxMsg(const YouBotSlaveMailboxMsg &message, const YouBotJointStorage &storage);
+
+    std::string getName() const { return this->name; };
+
+    ParameterType getType() const { return this->parameterType; };
+
+    int upperLimit;
+
+    int lowerLimit;
+
+    int value;
+
+    std::string name;
+
+    ParameterType parameterType;
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// D-Parameter of PID current regulator. First set.
+///////////////////////////////////////////////////////////////////////////////
+class DParameterFirstCurrentControl : public YouBotJointParameter {
+    friend class YouBotJoint;
+
+public:
+    DParameterFirstCurrentControl();
+
+    virtual ~DParameterFirstCurrentControl();
+
+    void getParameter(int &parameter) const;
+
+    void setParameter(const int parameter);
+
+    void toString(std::string &value);
+
+
+private:
+    void getYouBotMailboxMsg(YouBotSlaveMailboxMsg &message, TMCLCommandNumber msgType,
+                             const YouBotJointStorage &storage) const;
+
+    void setYouBotMailboxMsg(const YouBotSlaveMailboxMsg &message, const YouBotJointStorage &storage);
+
+    std::string getName() const { return this->name; };
+
+    ParameterType getType() const { return this->parameterType; };
+
+    int upperLimit;
+
+    int lowerLimit;
+
+    int value;
+
+    std::string name;
+
+    ParameterType parameterType;
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// I-Clipping Parameter of PID current regulator. First set.
+///////////////////////////////////////////////////////////////////////////////
+class IClippingParameterFirstCurrentControl : public YouBotJointParameter {
+    friend class YouBotJoint;
+
+public:
+    IClippingParameterFirstCurrentControl();
+
+    virtual ~IClippingParameterFirstCurrentControl();
+
+    void getParameter(int &parameter) const;
+
+    void setParameter(const int parameter);
+
+    void toString(std::string &value);
+
+
+private:
+    void getYouBotMailboxMsg(YouBotSlaveMailboxMsg &message, TMCLCommandNumber msgType,
+                             const YouBotJointStorage &storage) const;
+
+    void setYouBotMailboxMsg(const YouBotSlaveMailboxMsg &message, const YouBotJointStorage &storage);
+
+    std::string getName() const { return this->name; };
+
+    ParameterType getType() const { return this->parameterType; };
 
     int upperLimit;
 

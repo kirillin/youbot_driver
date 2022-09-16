@@ -1576,6 +1576,50 @@ void StopSwitchPolarity::setYouBotMailboxMsg(const YouBotSlaveMailboxMsg& messag
   // Bouml preserved body end 0007DEF1
 }
 
+
+PWMHysteresis::PWMHysteresis() {
+  this->name = "PWMHysteresis";
+  this->lowerLimit = 0;
+  this->upperLimit = INT_MAX;
+  this->parameterType = MOTOR_CONTOLLER_PARAMETER;
+}
+
+PWMHysteresis::~PWMHysteresis() {
+}
+
+void PWMHysteresis::getParameter(unsigned int& parameter) const {
+  parameter = this->value;
+}
+
+void PWMHysteresis::setParameter(const unsigned int& parameter) {
+  if (this->lowerLimit > parameter) {
+    throw std::out_of_range("The parameter exceeds the lower limit");
+  }
+  if (this->upperLimit < parameter) {
+    throw std::out_of_range("The parameter exceeds the upper limit");
+  }
+
+  this->value = parameter;
+}
+
+void PWMHysteresis::toString(std::string& value) {
+  std::stringstream ss;
+  ss << this->name << ": " << this->value;
+  value  = ss.str();
+}
+
+void PWMHysteresis::getYouBotMailboxMsg(YouBotSlaveMailboxMsg& message, TMCLCommandNumber msgType, const YouBotJointStorage& storage) const {
+  message.stctOutput.commandNumber = msgType;
+  message.stctOutput.moduleAddress = DRIVE;
+  message.stctOutput.typeNumber = 136; //PWMHysteresis
+  message.stctOutput.value = value;
+}
+
+void PWMHysteresis::setYouBotMailboxMsg(const YouBotSlaveMailboxMsg& message, const YouBotJointStorage& storage) {
+  this->value = message.stctInput.value;
+}
+
+
 ThermalWindingTimeConstant::ThermalWindingTimeConstant() {
   // Bouml preserved body begin 0009FF71
     this->name = "ThermalWindingTimeConstant";
